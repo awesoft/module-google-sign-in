@@ -1,0 +1,16 @@
+<?php
+
+/** @var SignIn $block */
+use Awesoft\GoogleSignIn\Block\Adminhtml\Button\SignIn;
+
+?>
+<?php if ($block->isEnabled()): ?>
+    <div class="awsft-btn-container">
+        <a href="<?= /* @noEscape */ $block->getLoginUrl(); ?>"
+           class="awsft-btn-google-signIn"
+           aria-label="Sign in with Google">
+            <img src="<?= /* @noEscape */ $block->getImageUrl(); ?>"
+                 alt="Sign in with Google"/>
+        </a>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+  <head>
+    <css src="Awesoft_GoogleSignIn::css/styles.css"/>
+  </head>
+  <body>
+    <referenceContainer name="root">
+      <block after="login.content"
+             before="login.footer"
+             name="awesoft.google_signin.button"
+             class="Awesoft\GoogleSignIn\Block\Adminhtml\Button\SignIn"
+             template="Awesoft_GoogleSignIn::admin/google_signin_button.phtml"/>
+      <referenceBlock name="admin.login">
+        <action method="setTemplate" ifconfig="awesoft/google_signin/disable_login_form">
+          <argument name="template"
+                    xsi:type="string">Awesoft_GoogleSignIn::admin/login.phtml</argument>
+        </action>
+      </referenceBlock>
+    </referenceContainer>
+  </body>
+</page>

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+  <system>
+    <tab id="awesoft" translate="label" sortOrder="10">
+      <label>Awesoft</label>
+    </tab>
+    <section id="google_signin" translate="label" sortOrder="10"
+             showInDefault="1" showInWebsite="0" showInStore="0">
+      <resource>Awesoft_GoogleSignIn::config</resource>
+      <label>Google Sign In</label>
+      <tab>awesoft</tab>
+      <group id="required_settings" translate="label" sortOrder="10"
+             showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>Required Settings</label>
+        <comment>
+          <![CDATA[
+            Create OAuth 2.0 credentials in Google Cloud's
+            <a target="_blank" href="https://console.developers.google.com/apis/credentials">APIs & Services</a>.
+          ]]>
+        </comment>
+        <field id="is_enabled" translate="label" type="select" sortOrder="10"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Enabled</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+          <config_path>awesoft/google_signin/is_enabled</config_path>
+          <comment>Enable "Sign in with Google" button.</comment>
+        </field>
+        <field id="client_id" translate="text" type="text" sortOrder="20"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Client ID</label>
+          <depends>
+            <field id="is_enabled">1</field>
+          </depends>
+          <validate>validate-entry validate-no-empty</validate>
+          <config_path>awesoft/google_signin/client_id</config_path>
+          <comment>An OAuth 2.0 Client ID.</comment>
+        </field>
+        <field id="client_secret" translate="label" type="obscure" sortOrder="30"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Client Secret</label>
+          <depends>
+            <field id="is_enabled">1</field>
+          </depends>
+          <validate>validate-entry validate-no-empty</validate>
+          <config_path>awesoft/google_signin/client_secret</config_path>
+          <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+          <comment>A secret string associated with the Client ID.</comment>
+        </field>
+        <field id="redirect_url" translate="label" type="text" sortOrder="40"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Redirect URL</label>
+          <depends>
+            <field id="is_enabled">1</field>
+          </depends>
+          <frontend_model>Awesoft\GoogleSignIn\Block\Adminhtml\System\Config\Field\RedirectUrlField</frontend_model>
+          <comment>
+            Please add this as an authorized redirect URI.
+            Users will be redirected to this path after they have authenticated with Google.
+          </comment>
+        </field>
+      </group>
+      <group id="admin_configuration" translate="label" sortOrder="20"
+             showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>Admin Configuration</label>
+        <comment>Additional settings for Google authenticated user.</comment>
+        <field id="disable_login_form" translate="label" type="select" sortOrder="10"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Disable Login Form</label>
+          <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+          <config_path>awesoft/google_signin/disable_login_form</config_path>
+          <comment>If enabled, default admin login form will not be shown.</comment>
+        </field>
+        <field id="hosted_domains" translate="label" type="textarea" sortOrder="20"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Hosted Domains</label>
+          <validate>validate-entry validate-no-empty</validate>
+          <config_path>awesoft/google_signin/hosted_domains</config_path>
+          <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+          <frontend_model>Awesoft\GoogleSignIn\Block\Adminhtml\System\Config\Field\HostedDomainsField</frontend_model>
+          <comment>List of domains that will be allowed to sign-in. If empty, any domain will be allowed.</comment>
+        </field>
+        <field id="enable_user_create" translate="label" type="select" sortOrder="30"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Create Admin User</label>
+          <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+          <config_path>awesoft/google_signin/enable_user_create</config_path>
+          <comment>If enabled, an admin user will be created automatically if not exists.</comment>
+        </field>
+        <field id="role_id" translate="label" type="select" sortOrder="40"
+               showInDefault="1" showInWebsite="0" showInStore="0">
+          <label>Default User Role</label>
+          <depends>
+            <field id="enable_user_create">1</field>
+          </depends>
+          <source_model>Awesoft\GoogleSignIn\Model\Config\Source\Role</source_model>
+          <config_path>awesoft/google_signin/role_id</config_path>
+          <comment>Newly created admin users will be assigned to the selected group.</comment>
+        </field>
+      </group>
+    </section>
+  </system>
+</config>
