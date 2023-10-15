@@ -1,0 +1,26 @@
+{
+  "name": "awesoft/module-google-sign-in",
+  "description": "Enable Google SSO button for Admin user.",
+  "version": "1.0.0",
+  "type": "magento2-module",
+  "require": {
+    "awesoft/framework": "*",
+    "magento/framework": "*",
+    "google/apiclient": "^2.0",
+    "magento/module-user": "101.2.*",
+    "magento/module-backend": "102.0.*",
+    "magento/module-authorization": "100.4.*",
+    "magento/module-two-factor-auth": "1.1.*"
+  },
+  "license": [
+    "MIT"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Awesoft\\GoogleSignIn\\": ""
+    }
+  }
+}
