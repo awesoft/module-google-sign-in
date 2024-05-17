@@ -4,26 +4,38 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Test\Unit\Model;
 
-use Awesoft\GoogleSignIn\Exception\AuthenticationException;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Awesoft\GoogleSignIn\Exception\IncorrectAuthenticationException;
 use Awesoft\GoogleSignIn\Exception\PermissionAuthenticationException;
-use Awesoft\GoogleSignIn\Model\Config;
 use Awesoft\GoogleSignIn\Model\GoogleClient;
 use Google\Client;
+use Google\Service\Exception;
 use Google\Service\Oauth2;
 use Google\Service\Oauth2\Resource\UserinfoV2Me;
 use Google\Service\Oauth2\Userinfo;
+use GuzzleHttp\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class GoogleClientTest extends TestCase
 {
+    /** @var LoggerInterface|MockObject $loggerMock */
     private LoggerInterface|MockObject $loggerMock;
+
+    /** @var Userinfo|MockObject $userinfoMock */
     private Userinfo|MockObject $userinfoMock;
-    private Client|MockObject $clientMock;
-    private Config|MockObject $configMock;
+
+    /** @var ClientInterface|MockObject $clientMock */
+    private ClientInterface|MockObject $clientMock;
+
+    /** @var ConfigInterface|MockObject $configMock */
+    private ConfigInterface|MockObject $configMock;
+
+    /** @var Oauth2|MockObject $oauth2Mock */
     private Oauth2|MockObject $oauth2Mock;
+
+    /** @var GoogleClient $googleClient */
     private GoogleClient $googleClient;
 
     /**
@@ -32,7 +44,7 @@ class GoogleClientTest extends TestCase
     protected function setUp(): void
     {
         $this->clientMock = $this->createMock(Client::class);
-        $this->configMock = $this->createMock(Config::class);
+        $this->configMock = $this->createMock(ConfigInterface::class);
         $this->oauth2Mock = $this->createMock(Oauth2::class);
         $this->userinfoMock = $this->createMock(Userinfo::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
@@ -59,7 +71,9 @@ class GoogleClientTest extends TestCase
 
     /**
      * @return void
-     * @throws AuthenticationException
+     * @throws IncorrectAuthenticationException
+     * @throws PermissionAuthenticationException
+     * @throws Exception
      */
     public function testGetUserinfo(): void
     {
@@ -71,7 +85,9 @@ class GoogleClientTest extends TestCase
 
     /**
      * @return void
-     * @throws AuthenticationException
+     * @throws Exception
+     * @throws IncorrectAuthenticationException
+     * @throws PermissionAuthenticationException
      */
     public function testGetUserinfoFetchFailed(): void
     {
@@ -84,7 +100,9 @@ class GoogleClientTest extends TestCase
 
     /**
      * @return void
-     * @throws AuthenticationException
+     * @throws Exception
+     * @throws IncorrectAuthenticationException
+     * @throws PermissionAuthenticationException
      */
     public function testGetUserinfoNotAllowedHostedDomain(): void
     {

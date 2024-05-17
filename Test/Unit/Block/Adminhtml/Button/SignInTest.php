@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Test\Unit\Block\Adminhtml\Button;
 
+use Awesoft\GoogleSignIn\Api\Block\Adminhtml\Button\SignInInterface;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Awesoft\GoogleSignIn\Block\Adminhtml\Button\SignIn;
-use Awesoft\GoogleSignIn\Model\Config;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Framework\View\Element\Template\Context;
@@ -14,24 +15,30 @@ use PHPUnit\Framework\TestCase;
 
 class SignInTest extends TestCase
 {
+    /** @var RequestInterface|MockObject $requestMock */
     private RequestInterface|MockObject $requestMock;
+
+    /** @var Repository|MockObject $assetRepoMock */
     private Repository|MockObject $assetRepoMock;
-    private Context|MockObject $contextMock;
-    private Config|MockObject $configMock;
-    private SignIn $signIn;
+
+    /** @var ConfigInterface|MockObject $configMock */
+    private ConfigInterface|MockObject $configMock;
+
+    /** @var SignInInterface $signIn */
+    private SignInInterface $signIn;
 
     /**
      * @return void
      */
     protected function setUp(): void
     {
-        $this->configMock = $this->createMock(Config::class);
-        $this->contextMock = $this->createMock(Context::class);
+        $this->configMock = $this->createMock(ConfigInterface::class);
+        $contextMock = $this->createMock(Context::class);
         $this->assetRepoMock = $this->createMock(Repository::class);
         $this->requestMock = $this->createMock(RequestInterface::class);
-        $this->contextMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);
-        $this->contextMock->expects($this->once())->method('getAssetRepository')->willReturn($this->assetRepoMock);
-        $this->signIn = new SignIn($this->configMock, $this->contextMock);
+        $contextMock->expects($this->once())->method('getRequest')->willReturn($this->requestMock);
+        $contextMock->expects($this->once())->method('getAssetRepository')->willReturn($this->assetRepoMock);
+        $this->signIn = new SignIn($this->configMock, $contextMock);
     }
 
     /**

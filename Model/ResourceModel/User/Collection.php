@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Model\ResourceModel\User;
 
+use Awesoft\GoogleSignIn\Api\Model\ResourceModel\User\CollectionInterface;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User as UserResourceModel;
 use Awesoft\GoogleSignIn\Model\User as UserModel;
 use Magento\User\Model\ResourceModel\User\Collection as UserCollection;
 
-class Collection extends UserCollection
+class Collection extends UserCollection implements CollectionInterface
 {
     /**
      * Initialize user collection model.

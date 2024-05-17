@@ -1,6 +1,25 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+  <preference for="Awesoft\GoogleSignIn\Api\Block\Adminhtml\Button\SignInInterface"
+              type="Awesoft\GoogleSignIn\Block\Adminhtml\Button\SignIn"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\ConfigInterface"
+              type="Awesoft\GoogleSignIn\Model\Config"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\GoogleClientInterface"
+              type="Awesoft\GoogleSignIn\Model\GoogleClient"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\StateInterface"
+              type="Awesoft\GoogleSignIn\Model\State"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\UserInterface"
+              type="Awesoft\GoogleSignIn\Model\User"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\ResourceModel\UserInterface"
+              type="Awesoft\GoogleSignIn\Model\ResourceModel\User"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Model\ResourceModel\User\CollectionInterface"
+              type="Awesoft\GoogleSignIn\Model\ResourceModel\User\Collection"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Service\AuthenticatorInterface"
+              type="Awesoft\GoogleSignIn\Service\Authenticator"/>
+  <preference for="Awesoft\GoogleSignIn\Api\Service\AdminUserInterface"
+              type="Awesoft\GoogleSignIn\Service\AdminUser"/>
+
   <type name="Awesoft\GoogleSignIn\Model\Config">
     <arguments>
       <argument name="serializer" xsi:type="object">Awesoft\Framework\Serializer\Json</argument>

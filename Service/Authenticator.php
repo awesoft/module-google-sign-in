@@ -4,40 +4,42 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Service;
 
-use Awesoft\GoogleSignIn\Exception\AuthenticationException;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
+use Awesoft\GoogleSignIn\Api\Model\StateInterface;
+use Awesoft\GoogleSignIn\Api\Service\AdminUserInterface;
+use Awesoft\GoogleSignIn\Api\Service\AuthenticatorInterface;
 use Awesoft\GoogleSignIn\Exception\IncorrectAuthenticationException;
-use Awesoft\GoogleSignIn\Model\Config;
+use Awesoft\GoogleSignIn\Exception\PermissionAuthenticationException;
 use Awesoft\GoogleSignIn\Model\GoogleClient;
-use Awesoft\GoogleSignIn\Model\State;
-use Magento\Backend\Model\Auth\Session;
-use Magento\Framework\Exception\LocalizedException;
+use Google\Service\Exception;
+use Magento\Backend\Model\Auth\StorageInterface;
 use Magento\TwoFactorAuth\Model\TfaSession;
 use Psr\Log\LoggerInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CookieAndSessionMisuse)
  */
-class Authenticator
+class Authenticator implements AuthenticatorInterface
 {
     /**
      * Authentication service constructor.
      *
      * @param GoogleClient $googleClient
      * @param LoggerInterface $logger
+     * @param AdminUserInterface $adminUser
+     * @param StorageInterface $session
+     * @param ConfigInterface $config
+     * @param StateInterface $state
      * @param TfaSession $tfaSession
-     * @param AdminUser $adminUser
-     * @param Session $session
-     * @param Config $config
-     * @param State $state
      */
     public function __construct(
         private readonly GoogleClient $googleClient,
         private readonly LoggerInterface $logger,
-        private readonly TfaSession $tfaSession,
-        private readonly AdminUser $adminUser,
-        private readonly Session $session,
-        private readonly Config $config,
-        private readonly State $state,
+        private readonly AdminUserInterface $adminUser,
+        private readonly StorageInterface $session,
+        private readonly ConfigInterface $config,
+        private readonly StateInterface $state,
+        private readonly TfaSession $tfaSession
     ) {
     }
 
@@ -45,7 +47,6 @@ class Authenticator
      * Get authentication url
      *
      * @return string
-     * @throws LocalizedException
      */
     public function getAuthUrl(): string
     {
@@ -58,8 +59,9 @@ class Authenticator
      * @param string $code
      * @param string $state
      * @return void
-     * @throws AuthenticationException
-     * @throws LocalizedException
+     * @throws Exception
+     * @throws IncorrectAuthenticationException
+     * @throws PermissionAuthenticationException
      */
     public function authenticate(string $code, string $state): void
     {
@@ -80,6 +82,6 @@ class Authenticator
 
         $this->session->setUser($user);
         $this->session->processLogin();
-        $this->tfaSession->grantAccess();
+        $this->tfaSession?->grantAccess();
     }
 }

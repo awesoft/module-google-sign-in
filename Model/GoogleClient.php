@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Model;
 
-use Awesoft\GoogleSignIn\Exception\AuthenticationException;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
+use Awesoft\GoogleSignIn\Api\Model\GoogleClientInterface;
 use Awesoft\GoogleSignIn\Exception\IncorrectAuthenticationException;
 use Awesoft\GoogleSignIn\Exception\PermissionAuthenticationException;
 use Google\Client;
+use Google\Service\Exception;
 use Google\Service\Oauth2;
 use Google\Service\Oauth2\Userinfo;
 use Psr\Log\LoggerInterface;
 
-class GoogleClient
+class GoogleClient implements GoogleClientInterface
 {
     /**
      * Google client constructor.
      *
      * @param LoggerInterface $logger
      * @param Client $client
-     * @param Config $config
+     * @param ConfigInterface $config
      * @param Oauth2|null $oauth2
      */
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly Client $client,
-        private readonly Config $config,
+        private readonly ConfigInterface $config,
         private ?Oauth2 $oauth2 = null,
     ) {
         $this->client->setClientId($this->config->getClientId());
@@ -52,7 +54,9 @@ class GoogleClient
      *
      * @param string $code
      * @return Userinfo
-     * @throws AuthenticationException
+     * @throws IncorrectAuthenticationException
+     * @throws PermissionAuthenticationException
+     * @throws Exception
      */
     public function getUserinfo(string $code): Userinfo
     {

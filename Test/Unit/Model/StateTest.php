@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Test\Unit\Model;
 
+use Awesoft\GoogleSignIn\Api\Model\StateInterface;
 use Awesoft\GoogleSignIn\Exception\SecurityAuthenticationException;
 use Awesoft\GoogleSignIn\Model\State;
 use Magento\Backend\Model\Auth\Session;
@@ -15,10 +16,17 @@ use Psr\Log\LoggerInterface;
 
 class StateTest extends TestCase
 {
+    /** @var LoggerInterface|MockObject $loggerMock */
     private LoggerInterface|MockObject $loggerMock;
+
+    /** @var Session|MockObject $sessionMock */
     private Session|MockObject $sessionMock;
+
+    /** @var Random|MockObject $randomMock */
     private Random|MockObject $randomMock;
-    private State $state;
+
+    /** @var StateInterface $state */
+    private StateInterface $state;
 
     /**
      * @return void
@@ -42,8 +50,11 @@ class StateTest extends TestCase
     public function testGenerate(): void
     {
         $value = 'generated-value';
-        $this->sessionMock->expects($this->once())->method('setData')->with(State::KEY, $value);
-        $this->randomMock->expects($this->once())->method('getRandomString')->with(State::LENGTH)->willReturn($value);
+        $this->sessionMock->expects($this->once())->method('setData')->with(StateInterface::KEY, $value);
+        $this->randomMock->expects($this->once())
+            ->method('getRandomString')
+            ->with(StateInterface::LENGTH)
+            ->willReturn($value);
         $this->assertSame($value, $this->state->generate());
     }
 
@@ -53,8 +64,11 @@ class StateTest extends TestCase
     public function testGetData(): void
     {
         $value = 'state-data';
-        $this->sessionMock->expects($this->once())->method('unsData')->with(State::KEY);
-        $this->sessionMock->expects($this->once())->method('getData')->with(State::KEY)->willReturn($value);
+        $this->sessionMock->expects($this->once())->method('unsData')->with(StateInterface::KEY);
+        $this->sessionMock->expects($this->once())
+            ->method('getData')
+            ->with(StateInterface::KEY)
+            ->willReturn($value);
         $this->assertSame($value, $this->state->getData());
     }
 
@@ -65,8 +79,8 @@ class StateTest extends TestCase
     public function testValidate(): void
     {
         $value = 'valid-state-data';
-        $this->sessionMock->expects($this->once())->method('getData')->with(State::KEY)->willReturn($value);
-        $this->sessionMock->expects($this->once())->method('unsData')->with(State::KEY);
+        $this->sessionMock->expects($this->once())->method('getData')->with(StateInterface::KEY)->willReturn($value);
+        $this->sessionMock->expects($this->once())->method('unsData')->with(StateInterface::KEY);
         $this->state->validate($value);
     }
 
@@ -76,8 +90,11 @@ class StateTest extends TestCase
      */
     public function testValidateInvalidState(): void
     {
-        $this->sessionMock->expects($this->once())->method('getData')->with(State::KEY)->willReturn('state-data');
-        $this->sessionMock->expects($this->once())->method('unsData')->with(State::KEY);
+        $this->sessionMock->expects($this->once())
+            ->method('getData')
+            ->with(StateInterface::KEY)
+            ->willReturn('state-data');
+        $this->sessionMock->expects($this->once())->method('unsData')->with(StateInterface::KEY);
         $this->loggerMock->expects($this->once())->method('error');
 
         $this->expectException(SecurityAuthenticationException::class);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Controller\Adminhtml\Verify;
 
+use Awesoft\GoogleSignIn\Api\Service\AuthenticatorInterface;
 use Awesoft\GoogleSignIn\Exception\AuthenticationException;
-use Awesoft\GoogleSignIn\Service\Authenticator;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -19,14 +19,14 @@ class Index implements HttpGetActionInterface
     /**
      * Verify controller constructor.
      *
-     * @param Authenticator $authenticator
+     * @param AuthenticatorInterface $authenticator
      * @param RedirectFactory $redirectFactory
      * @param RequestInterface $request
      * @param ManagerInterface $manager
      * @param LoggerInterface $logger
      */
     public function __construct(
-        private readonly Authenticator $authenticator,
+        private readonly AuthenticatorInterface $authenticator,
         private readonly RedirectFactory $redirectFactory,
         private readonly RequestInterface $request,
         private readonly ManagerInterface $manager,

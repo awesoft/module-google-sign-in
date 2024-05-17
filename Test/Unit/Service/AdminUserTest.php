@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Test\Unit\Service;
 
-use Awesoft\GoogleSignIn\Model\Config;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User as UserResourceModel;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User\Collection as UserCollection;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User\CollectionFactory as UserCollectionFactory;
@@ -34,8 +34,8 @@ class AdminUserTest extends TestCase
     /** @var Userinfo|MockObject $userinfoMock */
     private Userinfo|MockObject $userinfoMock;
 
-    /** @var Config|MockObject $configMock */
-    private Config|MockObject $configMock;
+    /** @var ConfigInterface|MockObject $configMock */
+    private ConfigInterface|MockObject $configMock;
 
     /** @var Random|MockObject $randomMock */
     private Random|MockObject $randomMock;
@@ -56,7 +56,7 @@ class AdminUserTest extends TestCase
         $this->userCollectionMock = $this->createMock(UserCollection::class);
         $this->userFactoryMock = $this->createMock(UserFactory::class);
         $this->userinfoMock = $this->createMock(Userinfo::class);
-        $this->configMock = $this->createMock(Config::class);
+        $this->configMock = $this->createMock(ConfigInterface::class);
         $this->randomMock = $this->createMock(Random::class);
         $this->userMock = $this->createMock(User::class);
 
@@ -73,6 +73,7 @@ class AdminUserTest extends TestCase
      * @dataProvider loadByUserinfoDataProvider
      * @param array $userIds
      * @param int $loadByEmail
+     * @param int $proceed
      * @return void
      */
     public function testLoadByUserinfoWithUsername(array $userIds, int $loadByEmail, int $proceed): void
