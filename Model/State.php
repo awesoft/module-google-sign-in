@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Model;
 
+use Awesoft\GoogleSignIn\Api\Model\StateInterface;
 use Awesoft\GoogleSignIn\Exception\SecurityAuthenticationException;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\Exception\LocalizedException;
@@ -13,21 +14,16 @@ use Psr\Log\LoggerInterface;
 /**
  * @SuppressWarnings(PHPMD.CookieAndSessionMisuse)
  */
-class State
+class State implements StateInterface
 {
-    public const LENGTH = 30;
-    public const KEY = 'awesoft.google-signin.state';
-
     /**
-     * State constructor
-     *
      * @param LoggerInterface $logger
-     * @param Session $session
+     * @param Session $storage
      * @param Random $random
      */
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly Session $session,
+        private readonly Session $storage,
         private readonly Random $random,
     ) {
     }
@@ -40,7 +36,7 @@ class State
     public function generate(): string
     {
         $state = $this->random->getRandomString(self::LENGTH);
-        $this->session->setData(self::KEY, $state);
+        $this->storage->setData(self::KEY, $state);
 
         return $state;
     }
@@ -52,8 +48,8 @@ class State
      */
     public function getData(): string
     {
-        $state = $this->session->getData(self::KEY);
-        $this->session->unsData(self::KEY);
+        $state = $this->storage->getData(self::KEY);
+        $this->storage->unsData(self::KEY);
 
         return $state;
     }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Service;
 
-use Awesoft\GoogleSignIn\Model\Config;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
+use Awesoft\GoogleSignIn\Api\Service\AdminUserInterface;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User as UserResourceModel;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User\CollectionFactory as UserCollectionFactory;
 use Awesoft\GoogleSignIn\Model\User;
@@ -14,24 +15,22 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Math\Random;
 
-class AdminUser
+class AdminUser implements AdminUserInterface
 {
-    private const PASSWORD_LENGTH = 30;
-
     /**
      * AdminUser constructor.
      *
      * @param UserCollectionFactory $userCollectionFactory
      * @param UserResourceModel $userResourceModel
      * @param UserFactory $userFactory
-     * @param Config $config
+     * @param ConfigInterface $config
      * @param Random $random
      */
     public function __construct(
         private readonly UserCollectionFactory $userCollectionFactory,
         private readonly UserResourceModel $userResourceModel,
         private readonly UserFactory $userFactory,
-        private readonly Config $config,
+        private readonly ConfigInterface $config,
         private readonly Random $random,
     ) {
     }
@@ -45,6 +44,8 @@ class AdminUser
     public function loadByUserinfo(Userinfo $userinfo): ?User
     {
         $email = $userinfo->getEmail();
+
+        /** @var User $user */
         $user = $this->userCollectionFactory->create()->loadByUsername($email)->getFirstItem();
 
         if ($user && $user->getId()) {

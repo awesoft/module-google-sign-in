@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Model;
 
+use Awesoft\GoogleSignIn\Api\Model\UserInterface;
 use Awesoft\GoogleSignIn\Model\ResourceModel\User as UserResourceModel;
 use Google\Service\Oauth2\Userinfo;
 use Magento\User\Model\User as UserModel;
 
-class User extends UserModel
+class User extends UserModel implements UserInterface
 {
     /**
      * Initialize user model

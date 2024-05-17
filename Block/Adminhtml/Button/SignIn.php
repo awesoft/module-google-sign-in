@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Block\Adminhtml\Button;
 
-use Awesoft\GoogleSignIn\Model\Config;
+use Awesoft\GoogleSignIn\Api\Block\Adminhtml\Button\SignInInterface;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 
-class SignIn extends Template
+class SignIn extends Template implements SignInInterface
 {
     /**
      * SignIn constructor
      *
-     * @param Config $config
+     * @param ConfigInterface $config
      * @param Context $context
      * @param array $data
      */
     public function __construct(
-        private readonly Config $config,
+        private readonly ConfigInterface $config,
         Context $context,
         array $data = [],
     ) {

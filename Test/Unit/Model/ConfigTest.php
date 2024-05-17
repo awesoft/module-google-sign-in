@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Test\Unit\Model;
 
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Awesoft\GoogleSignIn\Model\Config;
-use Exception;
 use Magento\Backend\Model\UrlInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
@@ -15,11 +15,20 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigTest extends TestCase
 {
+    /** @var ScopeConfigInterface|MockObject $scopeConfigMock  */
     private ScopeConfigInterface|MockObject $scopeConfigMock;
+
+    /** @var SerializerInterface|MockObject $serializerMock */
     private SerializerInterface|MockObject $serializerMock;
+
+    /** @var EncryptorInterface|MockObject $encryptorMock */
     private EncryptorInterface|MockObject $encryptorMock;
+
+    /** @var UrlInterface|MockObject $urlMock */
     private UrlInterface|MockObject $urlMock;
-    private Config $config;
+
+    /** @var ConfigInterface $config */
+    private ConfigInterface $config;
 
     /**
      * @return void
@@ -45,7 +54,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_IS_ENABLED)
+            ->with(ConfigInterface::XML_PATH_IS_ENABLED)
             ->willReturn('1');
 
         $this->assertSame(true, $this->config->isEnabled());
@@ -58,7 +67,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_CLIENT_ID)
+            ->with(ConfigInterface::XML_PATH_CLIENT_ID)
             ->willReturn('client_id');
 
         $this->assertSame('client_id', $this->config->getClientId());
@@ -71,7 +80,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_CLIENT_SECRET)
+            ->with(ConfigInterface::XML_PATH_CLIENT_SECRET)
             ->willReturn('encrypted_client_secret');
         $this->encryptorMock->expects($this->once())
             ->method('decrypt')
@@ -88,7 +97,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_HOSTED_DOMAINS)
+            ->with(ConfigInterface::XML_PATH_HOSTED_DOMAINS)
             ->willReturn('{"0":{"domain":"example.com"}}');
         $this->serializerMock->expects($this->once())
             ->method('unserialize')
@@ -106,7 +115,7 @@ class ConfigTest extends TestCase
         $this->urlMock->expects($this->once())->method('turnOffSecretKey')->willReturnSelf();
         $this->urlMock->expects($this->once())
             ->method('getRouteUrl')
-            ->with(Config::URL_PATH_REDIRECT)
+            ->with(ConfigInterface::URL_PATH_REDIRECT)
             ->willReturn($url);
 
         $this->assertSame($url, $this->config->getRedirectUrl());
@@ -121,7 +130,7 @@ class ConfigTest extends TestCase
         $this->urlMock->expects($this->once())->method('turnOffSecretKey')->willReturnSelf();
         $this->urlMock->expects($this->once())
             ->method('getRouteUrl')
-            ->with(Config::URL_PATH_LOGIN)
+            ->with(ConfigInterface::URL_PATH_LOGIN)
             ->willReturn($url);
 
         $this->assertSame($url, $this->config->getLoginUrl());
@@ -134,7 +143,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_ENABLE_USER_CREATE)
+            ->with(ConfigInterface::XML_PATH_ENABLE_USER_CREATE)
             ->willReturn('1');
 
         $this->assertSame(true, $this->config->isUserCreateEnabled());
@@ -147,7 +156,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_ROLE_ID)
+            ->with(ConfigInterface::XML_PATH_ROLE_ID)
             ->willReturn('2');
 
         $this->assertSame(2, $this->config->getRoleId());
@@ -160,7 +169,7 @@ class ConfigTest extends TestCase
     {
         $this->scopeConfigMock->expects($this->once())
             ->method('getValue')
-            ->with(Config::XML_PATH_DISABLE_LOGIN_FORM)
+            ->with(ConfigInterface::XML_PATH_DISABLE_LOGIN_FORM)
             ->willReturn('0');
 
         $this->assertSame(false, $this->config->isDisableLoginForm());

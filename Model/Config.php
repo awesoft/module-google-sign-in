@@ -4,23 +4,14 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Model;
 
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Magento\Backend\Model\UrlInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 
-class Config
+class Config implements ConfigInterface
 {
-    public const XML_PATH_IS_ENABLED = 'awesoft/google_signin/is_enabled';
-    public const XML_PATH_CLIENT_ID = 'awesoft/google_signin/client_id';
-    public const XML_PATH_CLIENT_SECRET = 'awesoft/google_signin/client_secret';
-    public const XML_PATH_HOSTED_DOMAINS = 'awesoft/google_signin/hosted_domains';
-    public const XML_PATH_ENABLE_USER_CREATE = 'awesoft/google_signin/enable_user_create';
-    public const XML_PATH_DISABLE_LOGIN_FORM = 'awesoft/google_signin/disable_login_form';
-    public const XML_PATH_ROLE_ID = 'awesoft/google_signin/role_id';
-    public const URL_PATH_LOGIN = 'awesoft_google_signin/index';
-    public const URL_PATH_REDIRECT = 'awesoft_google_signin/verify';
-
     /**
      * Config constructor.
      *

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Awesoft\GoogleSignIn\Block\Adminhtml\System\Config\Field;
 
-use Awesoft\GoogleSignIn\Model\Config;
+use Awesoft\GoogleSignIn\Api\Model\ConfigInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -15,13 +15,13 @@ class RedirectUrlField extends Field
     /**
      * RedirectUrlField constructor.
      *
-     * @param Config $config
+     * @param ConfigInterface $config
      * @param Context $context
      * @param array $data
      * @param SecureHtmlRenderer|null $secureRenderer
      */
     public function __construct(
-        private readonly Config $config,
+        private readonly ConfigInterface $config,
         Context $context,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null

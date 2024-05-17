@@ -73,11 +73,11 @@ class AuthenticatorTest extends TestCase
         $this->authenticator = new Authenticator(
             $this->googleClientMock,
             $this->loggerMock,
-            $this->tfaSessionMock,
             $this->adminUserMock,
             $this->sessionMock,
             $this->configMock,
-            $this->stateMock
+            $this->stateMock,
+            $this->tfaSessionMock,
         );
     }
 
